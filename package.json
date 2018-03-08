@@ -27,7 +27,8 @@
   "eslintConfig": {
     "extends": "enough",
     "env": {
-      "browser": true
+      "browser": true,
+      "commonjs": true
     }
   }
 }
