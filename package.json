@@ -1,0 +1,33 @@
+{
+  "name": "parse-open-graph",
+  "version": "0.1.0",
+  "description": "Open Graph parser for browser",
+  "main": "parseOpenGraph.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fenivana/parse-open-graph.git"
+  },
+  "keywords": [
+    "open",
+    "graph"
+  ],
+  "author": "Jiang Fengming",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fenivana/parse-open-graph/issues"
+  },
+  "homepage": "https://github.com/fenivana/parse-open-graph#readme",
+  "devDependencies": {
+    "eslint": "^4.18.2",
+    "eslint-config-enough": "^0.3.0"
+  },
+  "eslintConfig": {
+    "extends": "enough",
+    "env": {
+      "browser": true
+    }
+  }
+}
