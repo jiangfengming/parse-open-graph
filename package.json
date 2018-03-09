@@ -2,9 +2,9 @@
   "name": "parse-open-graph",
   "version": "0.1.1",
   "description": "Open Graph parser for browser",
-  "main": "parseOpenGraph.js",
+  "main": "dist/parseOpenGraph.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "babel src -d dist"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,9 @@
   },
   "homepage": "https://github.com/fenivana/parse-open-graph#readme",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-2": "^6.24.1",
     "eslint": "^4.18.2",
     "eslint-config-enough": "^0.3.0"
   },
@@ -30,5 +33,17 @@
       "browser": true,
       "commonjs": true
     }
+  },
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "loose": true,
+          "modules": "umd"
+        }
+      ],
+      "stage-2"
+    ]
   }
 }
