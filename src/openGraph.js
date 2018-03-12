@@ -100,7 +100,7 @@ function parse(meta) {
     }
   }
 
-  return result
+  return Object.keys(result).length ? result : null
 }
 
 export {

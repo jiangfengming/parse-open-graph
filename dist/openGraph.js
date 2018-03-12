@@ -139,7 +139,7 @@
       if (_ret === 'continue') continue;
     }
 
-    return result;
+    return Object.keys(result).length ? result : null;
   }
 
   exports.parse = parse;
