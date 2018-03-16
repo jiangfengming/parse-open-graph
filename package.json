@@ -1,6 +1,6 @@
 {
   "name": "parse-open-graph",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Open Graph parser for browser",
   "main": "dist/openGraph.js",
   "scripts": {
