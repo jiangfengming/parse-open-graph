@@ -63,10 +63,10 @@ Return format:
 ### parse(meta)
 Parses meta arrays to structured objects.
 
-#### Params:  
+Params:  
 `meta`: Meta arrays. The format is the return value of `parseMetaFromDocument()`.  
 
-#### Return format:
+Return format:
 ```js
 {
   og: {
