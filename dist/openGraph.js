@@ -14,6 +14,9 @@
   'use strict';
 
   exports.__esModule = true;
+  exports.parseMetaFromDocument = parseMetaFromDocument;
+  exports.parseFromDocument = parseFromDocument;
+  exports.parse = parse;
   function parseMetaFromDocument() {
     var elems = document.querySelectorAll('meta[property]');
     var result = [];
@@ -142,7 +145,9 @@
     return Object.keys(result).length ? result : null;
   }
 
-  exports.parse = parse;
-  exports.parseFromDocument = parseFromDocument;
-  exports.parseMetaFromDocument = parseMetaFromDocument;
+  exports.default = {
+    parse: parse,
+    parseFromDocument: parseFromDocument,
+    parseMetaFromDocument: parseMetaFromDocument
+  };
 });

@@ -1,4 +1,4 @@
-function parseMetaFromDocument() {
+export function parseMetaFromDocument() {
   const elems = document.querySelectorAll('meta[property]')
   const result = []
 
@@ -12,11 +12,11 @@ function parseMetaFromDocument() {
   return result
 }
 
-function parseFromDocument() {
+export function parseFromDocument() {
   return parse(parseMetaFromDocument())
 }
 
-function parse(meta) {
+export function parse(meta) {
   const appends = {
     'og:image': 'url',
     'og:video': 'url',
@@ -103,7 +103,7 @@ function parse(meta) {
   return Object.keys(result).length ? result : null
 }
 
-export {
+export default {
   parse,
   parseFromDocument,
   parseMetaFromDocument
