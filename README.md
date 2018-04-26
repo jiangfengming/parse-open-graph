@@ -80,7 +80,7 @@ Return format:
         width: '300',
         height: '300',
         alt: 'The Open Graph logo'
-      },
+      }
     ]
     description: 'The Open Graph protocol enables any web page to become a rich object in a social graph.'
   },
