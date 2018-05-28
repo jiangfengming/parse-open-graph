@@ -18,10 +18,10 @@ export function parseFromDocument() {
 
 export function parse(meta) {
   const appends = {
+    'og:locale': '_',
     'og:image': 'url',
     'og:video': 'url',
     'og:audio': 'url',
-    'og:locale': 'current',
     'music:album': 'url',
     'music:song': 'url',
     'video:actor': 'url'

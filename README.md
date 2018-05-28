@@ -64,7 +64,7 @@ Return format:
 Parses meta arrays to structured objects.
 
 Params:  
-`meta`: Meta arrays. The format is the return value of `parseMetaFromDocument()`.  
+`meta`: Meta arrays. The format is the same as the return value of `parseMetaFromDocument()`.  
 
 Return format:
 ```js
@@ -90,10 +90,12 @@ Return format:
 }
 ```
 
+Note: `og:locale` will be parsed to `og.local._`.
+
 See [examples/browser.html](examples/browser.html) for a list of properties.
 
 ### parseFromDocument()
 Shortcut of `parse(parseMetaFromDocument())`
 
 ## License
-MIT
+[MIT](LICENSE)
