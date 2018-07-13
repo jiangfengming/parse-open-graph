@@ -12,28 +12,35 @@ export function parseMetaFromDocument() {
   return result
 }
 
-export function parseFromDocument() {
-  return parse(parseMetaFromDocument())
+export function parseFromDocument(options) {
+  return parse(parseMetaFromDocument(), options)
 }
 
-export function parse(meta) {
-  const appends = {
-    'og:locale': '_',
-    'og:image': 'url',
-    'og:video': 'url',
-    'og:audio': 'url',
-    'music:album': 'url',
-    'music:song': 'url',
-    'video:actor': 'url'
+export function parse(meta, { alias = {}, arrays = [] } = {}) {
+  alias = {
+    'og:locale': 'og:locale:_',
+    'og:image': 'og:image:url',
+    'og:video': 'og:video:url',
+    'og:audio': 'og:audio:url',
+    'music:album': 'music:album:url',
+    'music:song': 'music:song:url',
+    'video:actor': 'video:actor:url',
+    ...alias
   }
 
-  const arrays = [
-    ['og:image', 'url'],
-    ['og:video', 'url'],
-    ['og:audio', 'url'],
-    ['music:album', 'url'],
-    ['music:song', 'url'],
-    ['video:actor', 'url'],
+  const aliasReverse = {}
+
+  for (const [k, v] of Object.entries(alias)) {
+    aliasReverse[v] = k
+  }
+
+  arrays = [
+    'og:image',
+    'og:video',
+    'og:audio',
+    'music:album',
+    'music:song',
+    'video:actor',
     'og:locale:alternate',
     'music:musician',
     'music:creator',
@@ -43,50 +50,67 @@ export function parse(meta) {
     'article:author',
     'article:tag',
     'book:author',
-    'book:tag'
+    'book:tag',
+    ...arrays
   ]
 
   const result = {}
-  let currentArrayElement
+  let currentArray
 
   for (const m of meta) {
     const content = m.content
     let property = m.property
 
-    if (appends[property]) property += ':' + appends[property]
-
+    if (alias[property]) property = alias[property]
+    const shorthand = aliasReverse[property]
     const path = property.split(':')
-    let node
+    let node = result
     let i = 0
 
-    const matched = arrays.find(a => a instanceof Array && property.startsWith(a[0]) && path[path.length - 1] !== a[1])
-    if (matched) {
-      if (!currentArrayElement || currentArrayElement.path !== matched[0]) continue
-      node = currentArrayElement.node
-      i = currentArrayElement.path.split(':').length
-    } else {
-      node = result
-      currentArrayElement = null
+    let arrayRoot
+    for (const tag of arrays) {
+      if (tag === property || shorthand && tag === shorthand) {
+        arrayRoot = tag
+        break
+      }
+    }
+
+    if (currentArray) {
+      if (arrayRoot && currentArray.root === arrayRoot) {
+        node = currentArray
+        i = currentArray.depth
+      } else {
+        currentArray = null
+      }
     }
 
     for (; i < path.length; i++) {
       const p = path[i]
       const currentPath = path.slice(0, i + 1).join(':')
-      const isArray = arrays.some(a => (a instanceof Array ? a[0] : a) === currentPath)
 
-      if (isArray) {
+      if (arrayRoot === currentPath) {
         if (!node[p]) node[p] = []
 
         if (i === path.length - 1) {
           node[p].push(content)
+          node = node[p]
+          if (!currentArray) {
+            currentArray = {
+              root: currentPath,
+              node,
+              depth: i
+            }
+          }
         } else {
           const newNode = {}
           node[p].push(newNode)
           node = newNode
-
-          currentArrayElement = {
-            path: currentPath,
-            node
+          if (!currentArray) {
+            currentArray = {
+              root: currentPath,
+              node,
+              depth: i + 1
+            }
           }
         }
       } else {

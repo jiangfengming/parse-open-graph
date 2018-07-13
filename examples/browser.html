@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head prefix="og: http://ogp.me/ns# video: http://ogp.me/ns/video#">
+<head prefix="og: http://ogp.me/ns# video: http://ogp.me/ns/video# sitemap: https://kashajs.github.com/kasha/ns/sitemap#">
 <meta charset="utf-8">
 <title>Arrival of a Train at La Ciotat</title>
 <meta property="og:title" content="Arrival of a Train at La Ciotat">
@@ -84,13 +84,27 @@
 <meta property="profile:last_name" content="Doe">
 <meta property="profile:gender" content="male">
 <meta property="profile:username" content="johndoe">
+<meta property="sitemap:image:loc" content="http://examples.opengraphprotocol.us/media/images/train.jpg">
+<meta property="sitemap:image:caption" content="The caption of the image.">
+<meta property="sitemap:image:geo_location" content="Limerick, Ireland">
+<meta property="sitemap:image:title" content="The title of the image.">
+<meta property="sitemap:image:license" content="https://creativecommons.org/licenses/by/4.0">
+<meta property="sitemap:image:loc" content="http://examples.opengraphprotocol.us/media/images/75.png">
+<meta property="sitemap:image:caption" content="caption">
+<meta property="sitemap:image:geo_location" content="Shanghai, China">
+<meta property="sitemap:image:title" content="title">
+<meta property="sitemap:image:license" content="https://creativecommons.org/licenses/by/4.0">
 </head>
 <body>
 <pre></pre>
 
 <script src="../dist/openGraph.umd.js"></script>
 <script>
-const result = openGraph.parseFromDocument()
+const result = openGraph.parseFromDocument({
+  arrays: [
+    'sitemap:image'
+  ]
+})
 console.log(result)
 document.querySelector('pre').textContent = JSON.stringify(result, null, 2)
 </script>
