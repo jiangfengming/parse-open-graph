@@ -4,6 +4,24 @@
   (factory((global.openGraph = {})));
 }(this, (function (exports) { 'use strict';
 
+  function _extends() {
+    _extends = Object.assign || function (target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+
+      return target;
+    };
+
+    return _extends.apply(this, arguments);
+  }
+
   function parseMetaFromDocument() {
     var elems = document.querySelectorAll('meta[property]');
     var result = [];
@@ -21,7 +39,6 @@
       }
 
       var el = _ref;
-
       result.push({
         property: el.getAttribute('property'),
         content: el.content
@@ -30,70 +47,110 @@
 
     return result;
   }
-
-  function parseFromDocument() {
-    return parse(parseMetaFromDocument());
+  function parseFromDocument(options) {
+    return parse(parseMetaFromDocument(), options);
   }
+  function parse(meta, _temp) {
+    var _ref2 = _temp === void 0 ? {} : _temp,
+        _ref2$alias = _ref2.alias,
+        alias = _ref2$alias === void 0 ? {} : _ref2$alias,
+        _ref2$arrays = _ref2.arrays,
+        arrays = _ref2$arrays === void 0 ? [] : _ref2$arrays;
 
-  function parse(meta) {
-    var appends = {
-      'og:locale': '_',
-      'og:image': 'url',
-      'og:video': 'url',
-      'og:audio': 'url',
-      'music:album': 'url',
-      'music:song': 'url',
-      'video:actor': 'url'
-    };
-
-    var arrays = [['og:image', 'url'], ['og:video', 'url'], ['og:audio', 'url'], ['music:album', 'url'], ['music:song', 'url'], ['video:actor', 'url'], 'og:locale:alternate', 'music:musician', 'music:creator', 'video:director', 'video:writer', 'video:tag', 'article:author', 'article:tag', 'book:author', 'book:tag'];
-
+    alias = _extends({
+      'og:locale': 'og:locale:_',
+      'og:image': 'og:image:url',
+      'og:video': 'og:video:url',
+      'og:audio': 'og:audio:url',
+      'music:album': 'music:album:url',
+      'music:song': 'music:song:url',
+      'video:actor': 'video:actor:url'
+    }, alias);
+    arrays = ['og:image', 'og:video', 'og:audio', 'music:album', 'music:song', 'video:actor', 'og:locale:alternate', 'music:musician', 'music:creator', 'video:director', 'video:writer', 'video:tag', 'article:author', 'article:tag', 'book:author', 'book:tag'].concat(arrays);
     var result = {};
-    var currentArrayElement = void 0;
+    var currentArray;
 
-    var _loop = function _loop(m) {
-      var content = m.content;
-      var property = m.property;
+    for (var _iterator2 = meta, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
+      var _ref3;
 
-      if (appends[property]) property += ':' + appends[property];
-
-      var path = property.split(':');
-      var node = void 0;
-      var i = 0;
-
-      var matched = arrays.find(function (a) {
-        return a instanceof Array && property.startsWith(a[0]) && path[path.length - 1] !== a[1];
-      });
-      if (matched) {
-        if (!currentArrayElement || currentArrayElement.path !== matched[0]) return 'continue';
-        node = currentArrayElement.node;
-        i = currentArrayElement.path.split(':').length;
+      if (_isArray2) {
+        if (_i2 >= _iterator2.length) break;
+        _ref3 = _iterator2[_i2++];
       } else {
-        node = result;
-        currentArrayElement = null;
+        _i2 = _iterator2.next();
+        if (_i2.done) break;
+        _ref3 = _i2.value;
       }
 
-      var _loop2 = function _loop2() {
+      var m = _ref3;
+      var content = m.content;
+      var property = m.property;
+      if (alias[property]) property = alias[property];
+      var path = property.split(':');
+      var node = result;
+      var i = 0;
+      var parent = path.slice(0, -1).join(':');
+      var arrayRoot = void 0;
+
+      for (var _iterator3 = arrays, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator]();;) {
+        var _ref4;
+
+        if (_isArray3) {
+          if (_i3 >= _iterator3.length) break;
+          _ref4 = _iterator3[_i3++];
+        } else {
+          _i3 = _iterator3.next();
+          if (_i3.done) break;
+          _ref4 = _i3.value;
+        }
+
+        var tag = _ref4;
+
+        if (tag === property || tag === parent) {
+          arrayRoot = tag;
+          break;
+        }
+      }
+
+      if (currentArray) {
+        if (arrayRoot && currentArray.root === arrayRoot && currentArray.lead !== property) {
+          node = currentArray.node;
+          i = currentArray.depth;
+        } else {
+          currentArray = null;
+        }
+      }
+
+      for (; i < path.length; i++) {
         var p = path[i];
         var currentPath = path.slice(0, i + 1).join(':');
-        var isArray = arrays.some(function (a) {
-          return (a instanceof Array ? a[0] : a) === currentPath;
-        });
 
-        if (isArray) {
+        if (arrayRoot === currentPath) {
           if (!node[p]) node[p] = [];
 
           if (i === path.length - 1) {
             node[p].push(content);
+
+            if (!currentArray) {
+              currentArray = {
+                root: currentPath,
+                node: node,
+                depth: i
+              };
+            }
           } else {
             var newNode = {};
             node[p].push(newNode);
             node = newNode;
 
-            currentArrayElement = {
-              path: currentPath,
-              node: node
-            };
+            if (!currentArray) {
+              currentArray = {
+                root: currentPath,
+                lead: path.slice(0, i + 2).join(':'),
+                node: node,
+                depth: i + 1
+              };
+            }
           }
         } else {
           if (i === path.length - 1) {
@@ -103,35 +160,11 @@
             node = node[p];
           }
         }
-      };
-
-      for (; i < path.length; i++) {
-        _loop2();
       }
-    };
-
-    for (var _iterator2 = meta, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
-      var _ref2;
-
-      if (_isArray2) {
-        if (_i2 >= _iterator2.length) break;
-        _ref2 = _iterator2[_i2++];
-      } else {
-        _i2 = _iterator2.next();
-        if (_i2.done) break;
-        _ref2 = _i2.value;
-      }
-
-      var m = _ref2;
-
-      var _ret = _loop(m);
-
-      if (_ret === 'continue') continue;
     }
 
     return Object.keys(result).length ? result : null;
   }
-
   var index = {
     parse: parse,
     parseFromDocument: parseFromDocument,

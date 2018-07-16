@@ -28,12 +28,6 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
     ...alias
   }
 
-  const aliasReverse = {}
-
-  for (const [k, v] of Object.entries(alias)) {
-    aliasReverse[v] = k
-  }
-
   arrays = [
     'og:image',
     'og:video',
@@ -62,22 +56,23 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
     let property = m.property
 
     if (alias[property]) property = alias[property]
-    const shorthand = aliasReverse[property]
+
     const path = property.split(':')
     let node = result
     let i = 0
 
+    const parent = path.slice(0, -1).join(':')
     let arrayRoot
     for (const tag of arrays) {
-      if (tag === property || shorthand && tag === shorthand) {
+      if (tag === property || tag === parent) {
         arrayRoot = tag
         break
       }
     }
 
     if (currentArray) {
-      if (arrayRoot && currentArray.root === arrayRoot) {
-        node = currentArray
+      if (arrayRoot && currentArray.root === arrayRoot && currentArray.lead !== property) {
+        node = currentArray.node
         i = currentArray.depth
       } else {
         currentArray = null
@@ -93,7 +88,6 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
 
         if (i === path.length - 1) {
           node[p].push(content)
-          node = node[p]
           if (!currentArray) {
             currentArray = {
               root: currentPath,
@@ -108,6 +102,7 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
           if (!currentArray) {
             currentArray = {
               root: currentPath,
+              lead: path.slice(0, i + 2).join(':'),
               node,
               depth: i + 1
             }

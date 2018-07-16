@@ -22,15 +22,14 @@
   },
   "homepage": "https://github.com/fenivana/parse-open-graph#readme",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.3",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-preset-env": "^1.7.0",
+    "@babel/core": "^7.0.0-beta.53",
+    "@babel/preset-env": "^7.0.0-beta.53",
+    "babel-eslint": "^9.0.0-beta.3",
     "cheerio": "^1.0.0-rc.2",
     "eslint": "^4.19.1",
-    "eslint-config-enough": "^0.3.3",
+    "eslint-config-enough": "^0.3.4",
     "rollup": "^0.59.4",
-    "rollup-plugin-babel": "^3.0.4"
+    "rollup-plugin-babel": "^4.0.0-beta.7"
   },
   "eslintConfig": {
     "extends": "enough",
@@ -42,15 +41,12 @@
   "babel": {
     "presets": [
       [
-        "env",
+        "@babel/env",
         {
           "loose": true,
           "modules": false
         }
       ]
-    ],
-    "plugins": [
-      "external-helpers"
     ]
   }
 }
