@@ -12,5 +12,9 @@ const meta = $('meta[property]').map((i, el) => ({
   content: $(el).attr('content')
 })).get()
 
-const result = parse(meta)
+const result = parse(meta, {
+  arrays: [
+    'sitemap:image'
+  ]
+})
 console.log(JSON.stringify(result, null, 2))

@@ -60,11 +60,46 @@ Return format:
 ]
 ```
 
-### parse(meta)
+### parse(meta, options)
 Parses meta arrays to structured objects.
 
 Params:  
 `meta`: Meta arrays. The format is the same as the return value of `parseMetaFromDocument()`.  
+`options`: Parse options. Defaults:
+```js
+{
+  alias: {
+    'og:locale': 'og:locale:_', // `og:locale` will be parsed to `og.local._`
+    'og:image': 'og:image:url',
+    'og:video': 'og:video:url',
+    'og:audio': 'og:audio:url',
+    'music:album': 'music:album:url',
+    'music:song': 'music:song:url',
+    'video:actor': 'video:actor:url'
+  },
+
+  arrays: [
+    'og:image',
+    'og:video',
+    'og:audio',
+    'music:album',
+    'music:song',
+    'video:actor',
+    'og:locale:alternate',
+    'music:musician',
+    'music:creator',
+    'video:director',
+    'video:writer',
+    'video:tag',
+    'article:author',
+    'article:tag',
+    'book:author',
+    'book:tag'
+  ]
+}
+```
+
+Your custom `alias` and `arrays` options will be merged into default options.
 
 Return format:
 ```js
@@ -90,12 +125,10 @@ Return format:
 }
 ```
 
-Note: `og:locale` will be parsed to `og.local._`.
+See [examples/browser.html](examples/browser.html) for example.
 
-See [examples/browser.html](examples/browser.html) for a list of properties.
-
-### parseFromDocument()
-Shortcut of `parse(parseMetaFromDocument())`
+### parseFromDocument(options)
+Shortcut of `parse(parseMetaFromDocument(), options)`
 
 ## License
 [MIT](LICENSE)
