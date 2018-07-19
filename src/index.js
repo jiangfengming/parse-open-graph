@@ -49,7 +49,6 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
   ]
 
   const result = {}
-  let currentArray
 
   for (const m of meta) {
     const content = m.content
@@ -61,52 +60,30 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
     let node = result
     let i = 0
 
-    const parent = path.slice(0, -1).join(':')
-    let arrayRoot
-    for (const tag of arrays) {
-      if (tag === property || tag === parent) {
-        arrayRoot = tag
-        break
-      }
-    }
-
-    if (currentArray) {
-      if (arrayRoot && currentArray.root === arrayRoot && currentArray.lead !== property) {
-        node = currentArray.node
-        i = currentArray.depth
-      } else {
-        currentArray = null
-      }
-    }
-
     for (; i < path.length; i++) {
       const p = path[i]
       const currentPath = path.slice(0, i + 1).join(':')
 
-      if (arrayRoot === currentPath) {
+      if (arrays.includes(currentPath)) {
         if (!node[p]) node[p] = []
+        const array = node[p]
 
         if (i === path.length - 1) {
-          node[p].push(content)
-          if (!currentArray) {
-            currentArray = {
-              root: currentPath,
-              node,
-              depth: i
+          // string array
+          array.push(content)
+        } else {
+          // object array
+          if (array.length) {
+            const existing = array[array.length - 1]
+            if (!existing[path[i + 1]] || arrays.includes(path.slice(0, i + 2).join(':'))) {
+              node = existing
+              continue
             }
           }
-        } else {
+
           const newNode = {}
           node[p].push(newNode)
           node = newNode
-          if (!currentArray) {
-            currentArray = {
-              root: currentPath,
-              lead: path.slice(0, i + 2).join(':'),
-              node,
-              depth: i + 1
-            }
-          }
         }
       } else {
         if (i === path.length - 1) {

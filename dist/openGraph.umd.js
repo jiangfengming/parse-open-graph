@@ -68,7 +68,6 @@
     }, alias);
     arrays = ['og:image', 'og:video', 'og:audio', 'music:album', 'music:song', 'video:actor', 'og:locale:alternate', 'music:musician', 'music:creator', 'video:director', 'video:writer', 'video:tag', 'article:author', 'article:tag', 'book:author', 'book:tag'].concat(arrays);
     var result = {};
-    var currentArray;
 
     for (var _iterator2 = meta, _isArray2 = Array.isArray(_iterator2), _i2 = 0, _iterator2 = _isArray2 ? _iterator2 : _iterator2[Symbol.iterator]();;) {
       var _ref3;
@@ -89,68 +88,32 @@
       var path = property.split(':');
       var node = result;
       var i = 0;
-      var parent = path.slice(0, -1).join(':');
-      var arrayRoot = void 0;
-
-      for (var _iterator3 = arrays, _isArray3 = Array.isArray(_iterator3), _i3 = 0, _iterator3 = _isArray3 ? _iterator3 : _iterator3[Symbol.iterator]();;) {
-        var _ref4;
-
-        if (_isArray3) {
-          if (_i3 >= _iterator3.length) break;
-          _ref4 = _iterator3[_i3++];
-        } else {
-          _i3 = _iterator3.next();
-          if (_i3.done) break;
-          _ref4 = _i3.value;
-        }
-
-        var tag = _ref4;
-
-        if (tag === property || tag === parent) {
-          arrayRoot = tag;
-          break;
-        }
-      }
-
-      if (currentArray) {
-        if (arrayRoot && currentArray.root === arrayRoot && currentArray.lead !== property) {
-          node = currentArray.node;
-          i = currentArray.depth;
-        } else {
-          currentArray = null;
-        }
-      }
 
       for (; i < path.length; i++) {
         var p = path[i];
         var currentPath = path.slice(0, i + 1).join(':');
 
-        if (arrayRoot === currentPath) {
+        if (arrays.includes(currentPath)) {
           if (!node[p]) node[p] = [];
+          var array = node[p];
 
           if (i === path.length - 1) {
-            node[p].push(content);
-
-            if (!currentArray) {
-              currentArray = {
-                root: currentPath,
-                node: node,
-                depth: i
-              };
-            }
+            // string array
+            array.push(content);
           } else {
+            // object array
+            if (array.length) {
+              var existing = array[array.length - 1];
+
+              if (!existing[path[i + 1]] || arrays.includes(path.slice(0, i + 2).join(':'))) {
+                node = existing;
+                continue;
+              }
+            }
+
             var newNode = {};
             node[p].push(newNode);
             node = newNode;
-
-            if (!currentArray) {
-              currentArray = {
-                root: currentPath,
-                lead: path.slice(0, i + 2).join(':'),
-                node: node,
-                depth: i + 1
-              };
-            }
           }
         } else {
           if (i === path.length - 1) {

@@ -84,6 +84,12 @@
 <meta property="profile:last_name" content="Doe">
 <meta property="profile:gender" content="male">
 <meta property="profile:username" content="johndoe">
+<meta property="sitemap:changefreq" content="hourly">
+<meta property="sitemap:priority" content="1">
+<meta property="sitemap:news:publication:name" content="The Example Times">
+<meta property="sitemap:news:publication:language" content="en">
+<meta property="sitemap:news:genres" content="PressRelease, Blog">
+<meta property="sitemap:news:stock_tickers" content="NASDAQ:A, NASDAQ:B">
 <meta property="sitemap:image:loc" content="http://examples.opengraphprotocol.us/media/images/train.jpg">
 <meta property="sitemap:image:caption" content="The caption of the image.">
 <meta property="sitemap:image:geo_location" content="Limerick, Ireland">
@@ -94,6 +100,14 @@
 <meta property="sitemap:image:geo_location" content="Shanghai, China">
 <meta property="sitemap:image:title" content="title">
 <meta property="sitemap:image:license" content="https://creativecommons.org/licenses/by/4.0">
+<meta property="sitemap:video:thumbnail_loc" content="http://www.example.com/thumbs/123.jpg">
+<meta property="sitemap:video:title" content="Grilling steaks for summer">
+<meta property="sitemap:video:tag" content="steak">
+<meta property="sitemap:video:tag" content="beefsteak">
+<meta property="sitemap:video:thumbnail_loc" content="http://www.example.com/thumbs/456.jpg">
+<meta property="sitemap:video:title" content="Yummy Pork Rib Sour Soup Cooking With Long bean">
+<meta property="sitemap:video:tag" content="prok">
+<meta property="sitemap:video:tag" content="bean">
 </head>
 <body>
 <pre></pre>
@@ -102,7 +116,9 @@
 <script>
 const result = openGraph.parseFromDocument({
   arrays: [
-    'sitemap:image'
+    'sitemap:image',
+    'sitemap:video',
+    'sitemap:video:tag'
   ]
 })
 console.log(result)
