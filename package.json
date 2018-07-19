@@ -22,13 +22,13 @@
   },
   "homepage": "https://github.com/fenivana/parse-open-graph#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.53",
-    "@babel/preset-env": "^7.0.0-beta.53",
+    "@babel/core": "^7.0.0-beta.54",
+    "@babel/preset-env": "^7.0.0-beta.54",
     "babel-eslint": "^9.0.0-beta.3",
     "cheerio": "^1.0.0-rc.2",
-    "eslint": "^4.19.1",
+    "eslint": "^5.1.0",
     "eslint-config-enough": "^0.3.4",
-    "rollup": "^0.59.4",
+    "rollup": "^0.63.2",
     "rollup-plugin-babel": "^4.0.0-beta.7"
   },
   "eslintConfig": {
