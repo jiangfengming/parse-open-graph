@@ -98,8 +98,9 @@ function parse(meta, _temp) {
           // object array
           if (array.length) {
             var existing = array[array.length - 1];
+            var child = existing[path[i + 1]];
 
-            if (!existing[path[i + 1]] || arrays.includes(path.slice(0, i + 2).join(':'))) {
+            if (!child || child.constructor === Object || child.constructor === Array) {
               node = existing;
               continue;
             }

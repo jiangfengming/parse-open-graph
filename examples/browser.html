@@ -104,6 +104,11 @@
 <meta property="sitemap:video:title" content="Grilling steaks for summer">
 <meta property="sitemap:video:tag" content="steak">
 <meta property="sitemap:video:tag" content="beefsteak">
+<meta property="sitemap:video:tag" content="beefsteak">
+<meta property="sitemap:video:restriction" content="IE GB US CA">
+<meta property="sitemap:video:restriction:relationship" content="allow">
+<meta property="sitemap:video:price" content="1.99">
+<meta property="sitemap:video:price:currency" content="EUR">
 <meta property="sitemap:video:thumbnail_loc" content="http://www.example.com/thumbs/456.jpg">
 <meta property="sitemap:video:title" content="Yummy Pork Rib Sour Soup Cooking With Long bean">
 <meta property="sitemap:video:tag" content="prok">
@@ -115,6 +120,15 @@
 <script src="../dist/openGraph.umd.js"></script>
 <script>
 const result = openGraph.parseFromDocument({
+  // these tag has attributes
+  alias: {
+    'sitemap:video:player_loc': 'sitemap:video:player_loc:_',
+    'sitemap:video:restriction': 'sitemap:video:restriction:_',
+    'sitemap:video:platform': 'sitemap:video:platform:_',
+    'sitemap:video:price': 'sitemap:video:price:_',
+    'sitemap:video:uploader': 'sitemap:video:uploader:_'
+  },
+
   arrays: [
     'sitemap:image',
     'sitemap:video',

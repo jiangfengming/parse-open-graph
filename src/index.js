@@ -75,7 +75,8 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
           // object array
           if (array.length) {
             const existing = array[array.length - 1]
-            if (!existing[path[i + 1]] || arrays.includes(path.slice(0, i + 2).join(':'))) {
+            const child = existing[path[i + 1]]
+            if (!child || child.constructor === Object || child.constructor === Array) {
               node = existing
               continue
             }
