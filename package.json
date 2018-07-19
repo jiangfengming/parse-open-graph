@@ -1,6 +1,6 @@
 {
   "name": "parse-open-graph",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Open Graph parser for browser",
   "main": "dist/openGraph.umd.js",
   "module": "dist/openGraph.esm.js",
