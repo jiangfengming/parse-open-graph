@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fenivana/parse-open-graph.git"
+    "url": "git+https://github.com/kashajs/parse-open-graph.git"
   },
   "keywords": [
     "open",
@@ -18,9 +18,9 @@
   "author": "Jiang Fengming",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fenivana/parse-open-graph/issues"
+    "url": "https://github.com/kashajs/parse-open-graph/issues"
   },
-  "homepage": "https://github.com/fenivana/parse-open-graph#readme",
+  "homepage": "https://github.com/kashajs/parse-open-graph#readme",
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.54",
     "@babel/preset-env": "^7.0.0-beta.54",
