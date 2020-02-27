@@ -78,7 +78,11 @@ function parse(meta, _temp) {
     var m = _ref3;
     var content = m.content;
     var property = m.property;
-    if (alias[property]) property = alias[property];
+
+    if (alias[property]) {
+      property = alias[property];
+    }
+
     var path = property.split(':');
     var node = result;
     var i = 0;
@@ -88,7 +92,10 @@ function parse(meta, _temp) {
       var currentPath = path.slice(0, i + 1).join(':');
 
       if (arrays.includes(currentPath)) {
-        if (!node[p]) node[p] = [];
+        if (!node[p]) {
+          node[p] = [];
+        }
+
         var array = node[p];
 
         if (i === path.length - 1) {
@@ -114,7 +121,14 @@ function parse(meta, _temp) {
         if (i === path.length - 1) {
           node[p] = content;
         } else {
-          if (!node[p]) node[p] = {};
+          if (node[p] == null) {
+            node[p] = {};
+          } else if (node[p].constructor === String) {
+            node[p] = {
+              _: node[p]
+            };
+          }
+
           node = node[p];
         }
       }
@@ -130,4 +144,4 @@ var index = {
 };
 
 export default index;
-export { parseMetaFromDocument, parseFromDocument, parse };
+export { parse, parseFromDocument, parseMetaFromDocument };

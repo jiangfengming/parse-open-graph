@@ -116,8 +116,9 @@
 <body>
 <pre></pre>
 
-<script src="../dist/openGraph.umd.js"></script>
-<script>
+<script type="module">
+import openGraph from '../src/index.js'
+
 const result = openGraph.parseFromDocument({
   // these tag has attributes
   alias: {

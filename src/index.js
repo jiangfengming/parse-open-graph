@@ -54,7 +54,9 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
     const content = m.content
     let property = m.property
 
-    if (alias[property]) property = alias[property]
+    if (alias[property]) {
+      property = alias[property]
+    }
 
     const path = property.split(':')
     let node = result
@@ -65,7 +67,10 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
       const currentPath = path.slice(0, i + 1).join(':')
 
       if (arrays.includes(currentPath)) {
-        if (!node[p]) node[p] = []
+        if (!node[p]) {
+          node[p] = []
+        }
+
         const array = node[p]
 
         if (i === path.length - 1) {
@@ -76,6 +81,7 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
           if (array.length) {
             const existing = array[array.length - 1]
             const child = existing[path[i + 1]]
+
             if (!child || child.constructor === Object || child.constructor === Array) {
               node = existing
               continue
@@ -90,7 +96,14 @@ export function parse(meta, { alias = {}, arrays = [] } = {}) {
         if (i === path.length - 1) {
           node[p] = content
         } else {
-          if (!node[p]) node[p] = {}
+          if (node[p] == null) {
+            node[p] = {}
+          } else if (node[p].constructor === String) {
+            node[p] = {
+              _: node[p]
+            }
+          }
+
           node = node[p]
         }
       }

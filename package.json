@@ -2,14 +2,13 @@
   "name": "parse-open-graph",
   "version": "0.3.2",
   "description": "Open Graph parser for browser",
-  "main": "dist/openGraph.umd.js",
-  "module": "dist/openGraph.esm.js",
+  "main": "dist/openGraph",
   "scripts": {
-    "build": "rollup -c rollup.config.esm.js && rollup -c rollup.config.umd.js"
+    "build": "rollup -c rollup.config.esm.js && rollup -c rollup.config.cjs.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kashajs/parse-open-graph.git"
+    "url": "git+https://github.com/kasha-io/parse-open-graph.git"
   },
   "keywords": [
     "open",
@@ -18,18 +17,18 @@
   "author": "Jiang Fengming",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kashajs/parse-open-graph/issues"
+    "url": "https://github.com/kasha-io/parse-open-graph/issues"
   },
-  "homepage": "https://github.com/kashajs/parse-open-graph#readme",
+  "homepage": "https://github.com/kasha-io/parse-open-graph#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.54",
-    "@babel/preset-env": "^7.0.0-beta.54",
-    "babel-eslint": "^9.0.0-beta.3",
-    "cheerio": "^1.0.0-rc.2",
-    "eslint": "^5.1.0",
-    "eslint-config-enough": "^0.3.4",
-    "rollup": "^0.63.2",
-    "rollup-plugin-babel": "^4.0.0-beta.7"
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "babel-eslint": "^10.1.0",
+    "cheerio": "^1.0.0-rc.3",
+    "eslint": "^6.8.0",
+    "eslint-config-enough": "^0.3.8",
+    "rollup": "^1.31.1",
+    "rollup-plugin-babel": "^4.3.3"
   },
   "eslintConfig": {
     "extends": "enough",
